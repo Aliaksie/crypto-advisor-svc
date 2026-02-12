@@ -1,0 +1,28 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/Aliaksie/crypto-advisor
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8080
+
+env:
+  SPRING_PROFILES_ACTIVE: "default"
+  SERVER_CONTEXT_PATH: "/crypto/api/v1"
+
+ingress:
+  enabled: true
+  className: azure/application-gateway
+  annotations:
+    kubernetes.io/ingress.class: azure/application-gateway
+  hosts:
+    - host: localhost  # todo: use AGW
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: [ ]
+
+resources: { }

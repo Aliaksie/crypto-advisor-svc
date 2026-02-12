@@ -1,0 +1,63 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>dev.cryptorec</groupId>
+    <artifactId>crypto-recommender</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>crypto-recommender-model</module>
+        <module>crypto-recommender-provider</module>
+        <module>crypto-recommender-service</module>
+        <module>crypto-recommender-api</module>
+        <module>crypto-recommender-app</module>
+    </modules>
+    <properties>
+        <maven.compiler.source>25</maven.compiler.source>
+        <maven.compiler.target>25</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!--   deps version    -->
+        <springboot.version>3.5.0</springboot.version>
+        <wiremock.version>3.9.1</wiremock.version>
+        <openapi.version>7.13.0</openapi.version>
+        <swagger-annotations.version>2.2.27</swagger-annotations.version>
+        <springdoc.version>2.8.0</springdoc.version>
+        <resilience4j.version>2.3.0</resilience4j.version>
+        <commonscsv.version>1.11.0</commonscsv.version>
+    </properties>
+
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${springboot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- OpenAPI Generator BOM -->
+            <dependency>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-project</artifactId>
+                <version>${openapi.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Spring Rest Client -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${springboot.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+</project>

@@ -1,0 +1,34 @@
+server:
+  port: ${PORT:8080}
+  servlet:
+    context-path: ${SERVER_CONTEXT_PATH:/crypto/api/v1}
+spring:
+  application:
+    name: crypto-recommender
+  threads:
+    virtual:
+      enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+# todo: not implimented yet
+#resilience4j:
+#  retry:
+#    instances:
+#      providerOne:
+#        maxAttempts: 3
+#        waitDuration: 2s
+#      providerTwo:
+#        maxAttempts: 3
+#        waitDuration: 2s
+#  circuitbreaker:
+#    instances:
+#      providerOne:
+#        slidingWindowSize: 10
+#        failureRateThreshold: 50
+#      providerTwo:
+#        slidingWindowSize: 10
+#        failureRateThreshold: 50

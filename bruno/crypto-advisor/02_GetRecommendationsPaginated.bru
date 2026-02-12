@@ -1,0 +1,48 @@
+meta {
+  name: Get Recommendations (Paginated)
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}{{api_path}}/recommendations?page=1&size=2&sort_by=normalizedRange_desc&periodMonths=60
+  body: none
+  auth: bearer
+}
+
+params:query {
+  page: 1
+  size: 2
+  sort_by: normalizedRange_desc
+  periodMonths: 60
+}
+
+headers {
+  Authorization: Token {{auth_token}}
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  
+  test("Page number is correct", function() {
+    expect(res.body).to.have.property("page").equal(1);
+  });
+  
+  test("Page size is correct", function() {
+    expect(res.body).to.have.property("size").equal(2);
+  });
+  
+  test("Recommendations count respects size", function() {
+    expect(res.body.recommendations.length).to.be.at.most(2);
+  });
+  
+  test("Sorted by normalizedRange descending", function() {
+    if (res.body.recommendations.length > 1) {
+      const first = res.body.recommendations[0];
+      const second = res.body.recommendations[1];
+      expect(first.normalizedRange).to.be.gte(second.normalizedRange);
+    }
+  });
+}

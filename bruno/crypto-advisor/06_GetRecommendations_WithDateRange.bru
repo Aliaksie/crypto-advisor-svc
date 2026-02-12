@@ -1,0 +1,47 @@
+meta {
+  name: Get Recommendations (With Date Range)
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{base_url}}{{api_path}}/recommendations?page=0&size=50&fromDate=2022-01-01&toDate=2022-01-31
+  body: none
+  auth: bearer
+}
+
+params:query {
+  page: 0
+  size: 50
+  fromDate: 2022-01-01
+  toDate: 2022-01-31
+}
+
+headers {
+  Authorization: Token {{auth_token}}
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  
+  test("Response has recommendations", function() {
+    expect(res.body).to.have.property("recommendations");
+    expect(res.body.recommendations).to.be.an("array");
+  });
+  
+  test("Date range applied successfully", function() {
+    expect(res.body).to.have.property("page").equal(0);
+    expect(res.body).to.have.property("size").equal(50);
+  });
+  
+  test("All cryptos have valid data", function() {
+    res.body.recommendations.forEach(function(crypto) {
+      expect(crypto).to.have.property("name");
+      expect(crypto).to.have.property("normalizedRange");
+      expect(crypto.normalizedRange).to.be.a("number");
+      expect(crypto.normalizedRange).to.be.gte(0);
+    });
+  });
+}

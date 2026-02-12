@@ -1,0 +1,65 @@
+name: CI/CD - Build, Dockerize, Helm Dry-Run
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Unit Test
+        run: mvn clean verify
+
+      - name: Install modules
+        run: mvn install -DskipTests
+
+      - name: Install Bruno via npm
+        run: npm install -g @usebruno/cli
+
+      - name: Verify Bruno installation
+        run: bru --version
+
+      - name: Start Spring Boot app
+        run: mvn -pl crypto-advisor-app spring-boot:run &
+
+      - name: Wait for app to be ready
+        run: |
+          for i in {1..10}; do
+            curl -s http://localhost:8080/crypto/api/v1/actuator/health | grep '"status":"UP"' && break
+            echo "Waiting for Spring Boot app..."
+            sleep 2
+          done
+
+      - name: Run Bruno tests
+        working-directory: ./bruno/crypto-advisor
+        run: bru run . --env local
+
+      - name: Kill Spring Boot process
+        run: pkill -f spring-boot || true
+
+      - name: Docker build
+        run: docker build -t crypto-advisor:latest -f ./deployment/Dockerfile .
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: 'latest'
+
+      - name: Helm Dry-Run
+        run: |
+          helm lint ./helm/crypto-advisor
+          helm template ./helm/crypto-advisor --values ./helm/crypto-advisor/values.yaml

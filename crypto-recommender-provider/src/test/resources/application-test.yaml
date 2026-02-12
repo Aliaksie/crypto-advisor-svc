@@ -1,0 +1,19 @@
+providers:
+  provider-one:
+    base-url: http://localhost:8089
+  provider-two:
+    base-url: http://localhost:8089
+  provider-three:
+    base-url: http://localhost:8089
+
+resilience4j:
+  retry:
+    instances:
+      providerOne:
+        maxAttempts: 3
+        waitDuration: 2s
+  circuitbreaker:
+    instances:
+      providerOne:
+        slidingWindowSize: 10
+        failureRateThreshold: 50

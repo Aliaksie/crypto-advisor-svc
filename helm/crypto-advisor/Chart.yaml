@@ -1,0 +1,4 @@
+apiVersion: v2
+name: crypto-advisor
+version: 0.1.0
+description: MVP Helm chart for Crypto Advisor

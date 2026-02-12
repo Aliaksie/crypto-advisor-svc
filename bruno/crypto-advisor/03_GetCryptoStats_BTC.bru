@@ -1,0 +1,48 @@
+meta {
+  name: Get Crypto Stats (BTC)
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url}}{{api_path}}/recommendations/BTC?periodMonths=60
+  body: none
+  auth: bearer
+}
+
+params:query {
+  periodMonths: 60
+}
+
+headers {
+  Authorization: Token {{auth_token}}
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  
+  test("Crypto name is BTC", function() {
+    expect(res.body).to.have.property("name").equal("BTC");
+  });
+  
+  test("Response has price statistics", function() {
+    expect(res.body).to.have.property("min");
+    expect(res.body).to.have.property("max");
+    expect(res.body).to.have.property("oldest");
+    expect(res.body).to.have.property("newest");
+  });
+  
+  test("Price stats have required fields", function() {
+    const min = res.body.min;
+    expect(min).to.have.property("timestamp");
+    expect(min).to.have.property("currency").equal("USD");
+    expect(min).to.have.property("price");
+  });
+  
+  test("Has normalized range", function() {
+    expect(res.body).to.have.property("normalizedRange");
+    expect(res.body.normalizedRange).to.be.a("number");
+  });
+}

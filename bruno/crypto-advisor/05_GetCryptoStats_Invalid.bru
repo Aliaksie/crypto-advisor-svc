@@ -1,0 +1,30 @@
+meta {
+  name: Get Crypto Stats (Invalid)
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{base_url}}{{api_path}}/recommendations/INVALID
+  auth: bearer
+}
+
+headers {
+  Authorization: Token {{auth_token}}
+}
+
+tests {
+  test("Status is 404", function() {
+    expect(res.getStatus()).to.equal(404);
+  });
+
+  test("Response has error code", function() {
+    expect(res.body).to.have.property("code").equal(404);
+  });
+
+  test("Response has error message", function() {
+    expect(res.body).to.have.property("message");
+    expect(res.body.message).to.include("not found");
+  });
+}
+

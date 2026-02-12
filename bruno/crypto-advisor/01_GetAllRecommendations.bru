@@ -1,0 +1,47 @@
+meta {
+  name: Get All Recommendations (Default)
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}{{api_path}}/recommendations?page=0&size=50&periodMonths=60
+  body: none
+  auth: bearer
+}
+
+params:query {
+  page: 0
+  size: 50
+  periodMonths: 60
+}
+
+headers {
+  Authorization: Token {{auth_token}}
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  
+  test("Response has recommendations array", function() {
+    expect(res.body).to.have.property("recommendations");
+    expect(res.body.recommendations).to.be.an("array");
+  });
+  
+  test("Response has pagination info", function() {
+    expect(res.body).to.have.property("page").equal(0);
+    expect(res.body).to.have.property("size").equal(50);
+    expect(res.body).to.have.property("totalElements");
+    expect(res.body).to.have.property("totalPages");
+  });
+  
+  test("Each crypto has required fields", function() {
+    if (res.body.recommendations.length > 0) {
+      const crypto = res.body.recommendations[0];
+      expect(crypto).to.have.property("name");
+      expect(crypto).to.have.property("normalizedRange");
+    }
+  });
+}
