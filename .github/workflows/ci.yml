@@ -34,7 +34,7 @@ jobs:
         run: bru --version
 
       - name: Start Spring Boot app
-        run: mvn -pl crypto-advisor-app spring-boot:run &
+        run: mvn -pl crypto-recommender-app spring-boot:run &
 
       - name: Wait for app to be ready
         run: |
