@@ -64,6 +64,8 @@ public class CsvDataProvider implements DataProvider {
                 return;
             }
 
+            log.info("Initializing CSV provider with directory: {}", csvDirectory.toAbsolutePath());
+
             for (String symbol : SUPPORTED_CRYPTOS) {
                 try {
                     loadCryptoData(symbol);

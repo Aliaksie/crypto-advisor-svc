@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up JDK 25
         uses: actions/setup-java@v4
@@ -35,6 +37,8 @@ jobs:
 
       - name: Start Spring Boot app
         run: mvn -pl crypto-recommender-app spring-boot:run &
+        env:
+          CRYPTO_CSV_DIRECTORY: ${{ github.workspace }}/prices
 
       - name: Wait for app to be ready
         run: |

@@ -14,7 +14,10 @@ management:
       exposure:
         include: health,info
 
-# todo: not implimented yet
+# Crypto provider configuration
+crypto:
+  csv:
+    directory: ${CRYPTO_CSV_DIRECTORY:prices}
 #resilience4j:
 #  retry:
 #    instances:
