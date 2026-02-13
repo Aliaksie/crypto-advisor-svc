@@ -3,6 +3,7 @@ package dev.cryptorec.api.error;
 import dev.cryptorec.model.exception.CryptoNotFoundException;
 import dev.cryptorec.model.exception.InvalidTimeframeException;
 import dev.cryptorec.model.exception.ValidationException;
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleValidation(final ValidationException ex) {
         return ResponseEntity.badRequest()
                 .body(new ErrorResponse().code(400).message("Validation failed").details(List.of(ex.getMessage())));
+    }
+
+    @ExceptionHandler(RequestNotPermitted.class)
+    public ResponseEntity<ErrorResponse> handleRequestNotPermitted(final RequestNotPermitted ex) {
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+                .body(new ErrorResponse().code(429).message(ex.getMessage()).details(List.of(ex.getMessage())));
     }
 
     @ExceptionHandler(Exception.class)

@@ -1,0 +1,11 @@
+crypto:
+  csv:
+    directory: ../prices
+
+rate-limit:
+  enabled: false  # Disable rate limiting in tests
+
+logging:
+  level:
+    dev.cryptorec: DEBUG
+

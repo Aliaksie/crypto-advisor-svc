@@ -23,7 +23,7 @@ third-party providers and exposes a unified API.
 
 ### Pre-requisites:
 
-- Java 17+
+- Java 25
 - Maven
 - Docker (optional)
 - (Optional) Helm 3+ for chart testing

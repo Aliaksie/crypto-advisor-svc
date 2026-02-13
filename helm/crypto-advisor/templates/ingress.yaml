@@ -2,9 +2,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "crypto-advisor.fullname" . }}
+  name: {{ include "crypto-recommender.fullname" . }}
   labels:
-    app: {{ include "crypto-advisor.name" . }}
+    app: {{ include "crypto-recommender.name" . }}
   annotations:
     {{- range $key, $value := .Values.ingress.annotations }}
       {{ $key }}: {{ $value | quote }}
@@ -21,7 +21,7 @@ spec:
             pathType: {{ .pathType }}
             backend:
               service:
-                name: {{ include "crypto-advisor.fullname" $ }}
+                name: {{ include "crypto-recommender.fullname" $ }}
                 port:
                   number: {{ $.Values.service.port }}
           {{- end }}

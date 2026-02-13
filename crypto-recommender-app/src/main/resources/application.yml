@@ -18,20 +18,13 @@ management:
 crypto:
   csv:
     directory: ${CRYPTO_CSV_DIRECTORY:prices}
-#resilience4j:
-#  retry:
-#    instances:
-#      providerOne:
-#        maxAttempts: 3
-#        waitDuration: 2s
-#      providerTwo:
-#        maxAttempts: 3
-#        waitDuration: 2s
-#  circuitbreaker:
-#    instances:
-#      providerOne:
-#        slidingWindowSize: 10
-#        failureRateThreshold: 50
-#      providerTwo:
-#        slidingWindowSize: 10
-#        failureRateThreshold: 50
+
+resilience4j:
+  ratelimiter:
+    instances:
+      recominderConntroller: # todo: it is not IP based , will be for all clients, implement IP based rate limiting better on Gateway level(via Spring Cloud Gateway , API Gateway, Nginx, etc.)
+        limitForPeriod: 20
+        limitRefreshPeriod: 1s
+        timeoutDuration: 0
+        registerHealthIndicator: false
+        eventConsumerBufferSize: 100

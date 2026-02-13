@@ -5,6 +5,7 @@ import com.cryptorec.api.generated.model.CryptoStats;
 import com.cryptorec.api.generated.model.RecommendationsResponse;
 import dev.cryptorec.api.mapper.RecommendationMapper;
 import dev.cryptorec.service.RecommendationService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +46,7 @@ public class RecommendationController implements RecommendationsApi {
      * @return paginated list of crypto statistics
      */
     @Override
+    @RateLimiter(name = "recominderConntroller")
     public ResponseEntity<RecommendationsResponse> getRecommendations(String authorization, Integer page, Integer size,
                                                                       String sortBy, LocalDate fromDate, LocalDate toDate,
                                                                       Integer periodMonths) {
@@ -71,6 +73,7 @@ public class RecommendationController implements RecommendationsApi {
      * @return crypto statistics
      */
     @Override
+    @RateLimiter(name = "recominderConntroller")
     public ResponseEntity<CryptoStats> getRecommendationsByCrypto(String cryptoName, String authorization,
                                                                   LocalDate fromDate, LocalDate toDate,
                                                                   Integer periodMonths) {
@@ -91,6 +94,7 @@ public class RecommendationController implements RecommendationsApi {
      * @return top crypto statistics
      */
     @Override
+    @RateLimiter(name = "recominderConntroller")
     public ResponseEntity<CryptoStats> getRecommendationsTopCrypto(String authorization, LocalDate fromDate,
                                                                    LocalDate toDate, Integer periodMonths) {
         log.info("GET /recommendations/top - fromDate={}, toDate={}, periodMonths={}", fromDate, toDate, periodMonths);

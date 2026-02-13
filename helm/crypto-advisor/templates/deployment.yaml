@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "crypto-advisor.fullname" . }}
+  name: {{ include "crypto-recommender.fullname" . }}
   labels:
-    app: {{ include "crypto-advisor.name" . }}
+    app: {{ include "crypto-recommender.name" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "crypto-advisor.name" . }}
+      app: {{ include "crypto-recommender.name" . }}
   template:
     metadata:
       labels:
-        app: {{ include "crypto-advisor.name" . }}
+        app: {{ include "crypto-recommender.name" . }}
     spec:
       containers:
         - name: app
